@@ -3,6 +3,8 @@
 This is my Python re-implementation of the programming exercises in the classic Machine Learning course offered by Stanford University on [Coursera](https://www.coursera.org/). The course is taught by AI's renowned researcher and teacher, Prof. Andrew Ng.
 
 ## Course outline ##
+The programming exercises are outlined as follows:
+
 - [Programming Exercise 1: Linear Regression](ex1)
 - [Programming Exercise 2: Logistic Regression](ex2)
 - [Programming Exercise 3: Multi-class classification & Neural Networks](ex3)
