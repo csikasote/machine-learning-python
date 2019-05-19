@@ -12,3 +12,4 @@ The programming exercises are outlined as follows:
 - [Programming Exercise 6: Support Vector Machines](ex6)
 - [Programming Exercise 7: K-Means Clustering and PCA](ex7)
 - [Programming Exercise 8: Anomaly Detection & Recommender Systems](ex8)
+
