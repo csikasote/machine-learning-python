@@ -3,10 +3,6 @@ import pandas as pd
 import numpy as np
 import os
 
-# Matplotlib for plotting figures
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-
 # Simple Linear Regression class
 class SimpleLR(object):
     def __init__(self, alpha=0.001, n_iter=20):
@@ -40,8 +36,8 @@ class SimpleLR(object):
 
 
 # Load data for computation
-file = os.getcwd() + '\data\ex1data1.txt'
-data = pd.read_csv(file, header=None).values
+path = os.getcwd() + '\data\ex1data1.txt'
+data = pd.read_csv(path, header=None).values
 X = data[:,0].reshape(-1,1)
 X = np.insert(X,0,1,axis=1)
 y = data[:,1]
@@ -63,16 +59,4 @@ print('%.f \t\t\t %.2f'%(35000, lr.predict([1, 3.5]) * 10000))
 print('%.f \t\t\t %.2f\n'%(70000, lr.predict([1, 7.0]) * 10000))
 
 
-# Batch gradient descent convergence plot
-def graph():
-    plt.plot(range(1, lr.n_iter+1), lr.cost_, 'b-o', label= r'${J{(\theta)}}$')
-    plt.xlabel('# of Iterations')
-    plt.ylabel(r'${J{(\theta)}}$', rotation=1)
-    plt.xlim([0,lr.n_iter])
-    plt.ylim([4,7])
-    plt.title('Batch Gradient Descent (BGD)')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
 
-graph()
