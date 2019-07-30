@@ -7,9 +7,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 # Import helper function
-from simple_linear_regression_utils import load_data, plot_data
-from simple_linear_regression_utils import plot_BGD, plotFit
-from simple_linear_regression_utils import LinearRegressionGD
+from ex1_utils import load_data, plot_data
+from ex1_utils import plot_BGD, plotFit
+from ex1_utils import LinearRegressionGD
 
 # Load data for computation
 print('Loading data ... ', end='')
