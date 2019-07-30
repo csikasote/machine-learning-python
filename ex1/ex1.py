@@ -54,18 +54,8 @@ print('Loading data ... ', end='')
 file = os.getcwd() + '\data\ex1data1.txt'
 X,y = load_data(file)
 
-# plotData() function to visualize the distribution of training data
-input("Press the <ENTER> key to continue...")
-f = plt.figure(1)
-plt.plot(X,y,'rx',markersize=10, label='Training Example')
-plt.grid(True) #Always plot.grid
-plt.ylabel('Profit in $10,000s')
-plt.xlabel('Population of City in 10,000s')
-plt.title('Training data')
-plt.axis([5, 25, -5, 25])
-plt.legend()
-
 # Adding the bias term to the dataset
+input("Press the <ENTER> key to continue...")
 Xtrain = np.insert(X,0,1,axis=1)
 ytrain = y
 
@@ -80,6 +70,7 @@ print('\nRunning linear regression with BGD ... ', end='')
 input("Press the <ENTER> key to continue...")
 lr.fit(Xtrain, ytrain)
 print("\nComputed theta(using BGD):", lr.w_)
+print('\nLinear Model: Y = %.3f + %.3fx1'%(lr.w_[0], lr.w_[1]))
 
 # Making prediction
 print('\nPredictions ... ', end='')
@@ -88,17 +79,38 @@ print('\nPopulation\t\t Profit\n==========\t\t ======')
 print('%.f \t\t\t %.2f'%(35000, lr.predict([1, 3.5]) * 10000))
 print('%.f \t\t\t %.2f\n'%(70000, lr.predict([1, 7.0]) * 10000))
 
+# plotData() function to visualize the distribution of training data
+input("Press the <ENTER> key to continue...")
+f = plt.figure(1)
+plt.plot(X,y,'rx',markersize=10, label='Training Example')
+plt.grid(True)
+plt.ylabel('Profit in $10,000s')
+plt.xlabel('Population of City in 10,000s')
+plt.title('Training data')
+plt.axis([5, 25, -5, 25])
+plt.legend()
 
 # Batch gradient descent convergence plot
-input("Press the <ENTER> key to continue...")
 g = plt.figure(2)
 plt.plot(range(1, lr.n_iter+1), lr.cost_, 'b-o', label= r'${J{(\theta)}}$')
 plt.xlabel('# of Iterations')
 plt.ylabel(r'${J{(\theta)}}$', rotation=1)
 plt.xlim([0,lr.n_iter])
 plt.ylim([4,7])
+plt.grid(True)
 plt.title('Batch Gradient Descent (BGD)')
 plt.legend()
-plt.grid(True)
+
+# Fitting the linear model
+h = plt.figure(3)
+plt.plot(X,y,'rx',markersize=10, label='Training Example')
+plt.plot(Xtrain, lr.predict(Xtrain), color='black', lw=2)
+plt.grid(True) 
+plt.ylabel('Profit in $10,000s')
+plt.xlabel('Population of City in 10,000s')
+titler = 'Linear Model: Y = %.3f + %.3fx1'%(lr.w_[0], lr.w_[1])
+plt.title(titler)
+plt.axis([5, 25, -5, 25])
+plt.legend()
 plt.show()
 
