@@ -24,13 +24,16 @@ class LinearRegressionGD(object):
     def fit(self, X, y):
         self.w_    = np.zeros(X.shape[1])
         self.cost_ = []
+        self.theta_ = []
         for i in range(self.n_iter):
             y_hat    = self.hypothesis(X)
             errors   = (y_hat - y)
             gradient = self.alpha * np.dot(X.T, errors)
             self.w_  -= self.alpha * gradient
+            param    = self.w_
             cost     = np.sum(errors**2) / (len(y)*2.0)
             self.cost_.append(cost)
+            self.theta_.append(param)
         return self
         
     def hypothesis(self, X):
@@ -94,3 +97,13 @@ def plotFit(Xtrain,X,y,model):
     plt.title(titler)
     plt.axis([5, 25, -5, 25])
     plt.legend()
+
+def bgd_path(theta):
+    k = plt.figure(4)
+    plt.plot(theta[:, 0], theta[:, 1], "m-s", linewidth=3, label="Batch")
+    plt.title('Batch gradient descent path plot')
+    plt.legend(loc="lower left")
+    plt.xlabel(r"$\theta_0$", fontsize=17)
+    plt.ylabel(r"$\theta_1$", fontsize=17, rotation=0)
+    plt.axis([-4.0, 1.0, -0.2, 1.2])
+    plt.grid(True)

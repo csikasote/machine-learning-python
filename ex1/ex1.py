@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 # Import helper function
 from ex1_functions import load_data, plot_data, save_fig
-from ex1_functions import plot_BGD, plotFit
+from ex1_functions import plot_BGD, bgd_path, plotFit
 from ex1_functions import LinearRegressionGD
 
 # Load data for computation
@@ -33,6 +33,7 @@ input("")
 lr.fit(Xtrain, ytrain)
 print("\nComputed theta(using BGD):", lr.w_)
 print('\nLinear Model: Y = %.3f + %.3fx1'%(lr.w_[0], lr.w_[1]))
+print('\nTheta values computed (using BGD): ', np.array(lr.theta_))
 
 # Making prediction
 print('\nPredictions ... ', end='')
@@ -49,5 +50,9 @@ plot_BGD(lr)
 save_fig("BGD")
 plotFit(Xtrain,X,y,lr)
 save_fig("fit_line")
+#theta = np.array(lr.theta_)
+#bgd_path(theta)
+#save_fig("BGD_PATH")
 plt.show()
+
 input("Press <ENTER> key to continue ...")
