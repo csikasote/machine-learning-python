@@ -39,6 +39,19 @@ class LinearRegressionGD(object):
     def predict(self, X):
         return self.hypothesis(X)
 
+
+# Where to save the figures
+EXERCISE_ROOT_DIR = "."
+IMAGES_PATH = os.path.join(EXERCISE_ROOT_DIR, "images")
+
+# The function allows images to be saved
+def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
+    path = os.path.join(IMAGES_PATH, fig_id + "." + fig_extension)
+    print("Saving figure", fig_id)
+    if tight_layout:
+        plt.tight_layout()
+    plt.savefig(path, format=fig_extension, dpi=resolution)
+
 # Load data for computation
 def load_data(file):
     data = pd.read_csv(file, header=None).values
@@ -73,7 +86,7 @@ def plot_BGD(model):
 def plotFit(Xtrain,X,y,model):
     h = plt.figure(3)
     plt.plot(X,y,'rx',markersize=10, label='Training Example')
-    plt.plot(Xtrain, model.predict(Xtrain), color='black', lw=2)
+    plt.plot(Xtrain, model.predict(Xtrain),'--', color='blue', lw=2)
     plt.grid(True) 
     plt.ylabel('Profit in $10,000s')
     plt.xlabel('Population of City in 10,000s')
