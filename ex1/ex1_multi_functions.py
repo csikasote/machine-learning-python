@@ -27,8 +27,7 @@ class MultivariateLinearRegression(object):
         for i in range(self.n_iter):
             y_hat    = self.hypothesis(X)
             errors   = (y_hat - y)
-            gradient = (1/len(y)) * np.dot(X.T,errors)
-            self.w_ -= self.alpha * gradient
+            self.w_ -= self.alpha * (1/len(y)) * np.dot(X.T,errors)
             cost     = (1/(2*len(y))) * (np.dot((y_hat-y).T,(y_hat-y)))
             self.cost_.append(cost)
             if self.print_cost and i % 10 == 0:
