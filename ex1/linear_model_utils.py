@@ -77,6 +77,13 @@ class MultivariateLinearRegressionGD(object):
     def predict(self,X):
         return self.hypothesis(X)
 
+# Normal equation for linear equations
+def normalEquation(X, y):
+    #NORMALEQN Computes the closed-form solution to linear regression 
+    #NORMALEQN(X,y) computes the closed-form solution to linear regression using the normal equations.
+    #theta = np.zeros((X.shape[1], 1))
+    return np.dot(np.dot(np.linalg.pinv(np.dot(X.T,X)), X.T),y)
+
 # Function to normalize features
 def featureNormalize(X):
     # Computing the Mean and STD of X
