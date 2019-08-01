@@ -7,9 +7,9 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 # Import helper function
-from ex1_functions import load_data, plot_data, save_fig
-from ex1_functions import plot_BGD, bgd_path, plotFit
-from ex1_functions import LinearRegressionGD
+from linear_model_utils import load_data, plot_data, save_fig
+from linear_model_utils import plot_cost, bgd_path, plot_fit
+from linear_model_utils import SimpleLinearRegressionGD
 
 # Load data for computation
 print('Loading data ... ', end='')
@@ -22,7 +22,7 @@ Xtrain = np.insert(X,0,1,axis=1)
 ytrain = y
 
 # Creating an object of linear regression
-lr = LinearRegressionGD(0.01, 1500)
+lr = SimpleLinearRegressionGD(0.01, 1500)
 
 # Computing initial cost
 print('\nInitial cost computes is %.2f.'%(lr.MSE(Xtrain,ytrain)))
@@ -31,9 +31,8 @@ print('\nInitial cost computes is %.2f.'%(lr.MSE(Xtrain,ytrain)))
 print('\nRunning linear regression with BGD ... ', end='')
 input("")
 lr.fit(Xtrain, ytrain)
-print("\nComputed theta(using BGD):", lr.w_)
+print("\nMinimum point(using BGD):", lr.w_)
 print('\nLinear Model: Y = %.3f + %.3fx1'%(lr.w_[0], lr.w_[1]))
-print('\nTheta values computed (using BGD): ', np.array(lr.theta_))
 
 # Making prediction
 print('\nPredictions ... ', end='')
@@ -46,13 +45,9 @@ print('%.f \t\t\t %.2f\n'%(70000, lr.predict([1, 7.0]) * 10000))
 input("Press <ENTER> key to plot and save the figures ...")
 plot_data(X,y)
 save_fig("training_data")
-plot_BGD(lr)
+plot_cost(lr)
 save_fig("BGD")
-plotFit(Xtrain,X,y,lr)
+plot_fit(Xtrain,X,y,lr)
 save_fig("fit_line")
-#theta = np.array(lr.theta_)
-#bgd_path(theta)
-#save_fig("BGD_PATH")
 plt.show()
-
 input("Press <ENTER> key to continue ...")
