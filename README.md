@@ -15,7 +15,7 @@ The programming exercises are outlined as follows:
 
 ## Useful resources and references
 - Geron, A., 2017. Hands-On Machine Learning with Scikit-learn & Tensorflow. Sepastopol: O`reilly.
-- James, G., Witten, D., Hastie, T. & Tibshirani, R., 2017. An Introduction to Statistical Learning. New York: Springer.
+- James, G., Witten, D., Hastie, T. & Tibshirani, R., 2017. [An Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/). New York: Springer.
 - Marsland, S., 2015. Machine Learning: An Algorithmic Perspective. s.l.:CRC press.
 - Raschka, S. & Mirjalili, V., 2017. Python Machine Learning. Birmingham: Packt.
 
