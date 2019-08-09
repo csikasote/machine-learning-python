@@ -13,3 +13,9 @@ The programming exercises are outlined as follows:
 - [Programming Exercise 7: K-Means Clustering and PCA](ex7)
 - [Programming Exercise 8: Anomaly Detection & Recommender Systems](ex8)
 
+## Useful resources and references
+- An Introduction to Statistical Learning
+- Python Machine Learning, 2nd Edition
+- Machine Learning: An Algorithmic Perspective, 2nd Edition
+- Hands-On Machine Learning with Scikit-Learn & Tensorflow
+- Introduction to Data Mining, 2nd Edition
