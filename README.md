@@ -14,8 +14,8 @@ The programming exercises are outlined as follows:
 - [Programming Exercise 8: Anomaly Detection & Recommender Systems](ex8)
 
 ## Useful resources and references
-- An Introduction to Statistical Learning
-- Python Machine Learning, 2nd Edition
-- Machine Learning: An Algorithmic Perspective, 2nd Edition
-- Hands-On Machine Learning with Scikit-Learn & Tensorflow
-- Introduction to Data Mining, 2nd Edition
+- Geron, A., 2017. Hands-On Machine Learning with Scikit-learn & Tensorflow. Sepastopol: O`reilly.
+- James, G., Witten, D., Hastie, T. & Tibshirani, R., 2017. An Introduction to Statistical Learning. New York: Springer.
+- Marsland, S., 2015. Machine Learning: An Algorithmic Perspective. s.l.:CRC press.
+- Raschka, S. & Mirjalili, V., 2017. Python Machine Learning. Birmingham: Packt.
+
