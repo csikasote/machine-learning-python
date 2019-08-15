@@ -18,24 +18,35 @@ class LogisticRegression(object):
     def sigmoid(self, z):
         return (1/(1+ np.exp(-z)))
     
-    # Logistic regression objective function
+    # Objective function
     def cost_function(self,theta,X,y):
         y_hat = self.sigmoid(np.dot(X,theta))
         return (-1/len(X)) * (np.dot(y.T,np.log(y_hat)) +\
                               np.dot((1-y).T,np.log(1-y_hat)))
 
-    # Function to FIT the algorithm
+    # Using "fmin()" to optimize
     def fit(self,X,y,theta):
         return opt.fmin(func=self.cost_function,
                         x0=theta,
                         args=(X,y),
                         maxiter=self.n_iter,
                         full_output=True)
-
-    # Prediction function
+    # Predict function
     def predict(self,X,theta):
         probability = self.sigmoid(np.dot(X,theta))
-        return [1 if x >= 0.5 else 0 for x in probability]
+        return [1 if p >= 0.5 else 0 for p in probability]
+
+    # Classification function
+    def classify(self,X,theta):  
+        probability = self.sigmoid(np.dot(X,theta))
+        return ["ADMIT" if p >= 0.5 else "DECLINE" for p in probability]
+
+    # Decision function
+    def decision_(self,X,theta):
+        return "\nProbability: %2f"%(self.sigmoid(np.dot(X,theta))[0])\
+               + ' \nPrediciton: ' + str(self.predict(X,theta)[0]) \
+               + ' \nModel Decision: ' + str(self.classify(X,theta)[0]) \
+
     
 def main():
     # Load dataset
@@ -50,17 +61,24 @@ def main():
 
     # Instantiate an object the LogisticRegression class
     lr = LogisticRegression()
+    
     # Print the initial cost
     print('\nInitial Cost: %f\n' % (lr.cost_function(init_theta,X,y)))
 
     # Optimizing the cost function
     result = lr.fit(X,y,init_theta)
-    theta = result[0]
-    cost = result[1]
-    print('\nThe minimum point found(with fmin()): ',theta )
-    print('\nComputed cost at minimum point: %.6f' %(cost))
+    print('\nThe minimum point found: ',result[0])
+    print('\nComputed cost at minimum point: %.6f\n' %(result[1]))
+
+    # Testing model with predictions
+    input("\nPress <ENTER> key to test the model ...")
+    Xtest = [[1, 45, 85]] #TEST EXAMPLE
+    decision = lr.decision_(Xtest,result[0])
+    print(decision)
+    input('\nPress <ENTER> to terminate program ...')
 
 if __name__ == "__main__":
+    input("\nPress <ENTER> to run program ...")
     main()
 
     
