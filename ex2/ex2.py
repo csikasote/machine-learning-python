@@ -70,6 +70,25 @@ def plot_data(x1,x2,y1,y2):
     plt.grid(True)
     plt.legend()
 
+# Plot decision boundary function
+def plot_decision_boundary(x1,x2,y1,y2,theta):
+    theta0 = theta[0]; 
+    theta1 = theta[1]; 
+    theta2 = theta[2];
+    fig, ax = plt.subplots()
+    plt.scatter(x1,y1, s=50, c='b', marker='o', label='Admitted')  
+    plt.scatter(x2,y2, s=50, c='r', marker='x', label='Not Admitted')
+    x_vals = np.array(ax.get_xlim())
+    y_vals = -1 * np.divide(((np.multiply(theta1,x_vals)) + theta0),theta2)
+    plt.plot(x_vals, y_vals, '--', c="red", label='Decision Boundary')
+    titlestr = 'Decision Boundary Function: y = %.2f + %.2fX1 + %.2fX2' % (theta0, theta1, theta2)
+    plt.title(titlestr) 
+    plt.axis([20,110,20,110])
+    plt.xlabel('Exam 1 Score')  
+    plt.ylabel('Exam 2 Score')
+    plt.grid(True)
+    plt.legend()
+
 # The function allows images to be saved
 def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
     path = os.path.join(IMAGES_PATH, fig_id + "." + fig_extension)
@@ -92,7 +111,7 @@ def main():
     # Visualize the data distribution
     input("Press <ENTER> to visualize data ...")
     plot_data(Ex1_pos,Ex1_neg,Ex2_pos,Ex2_neg)
-    save_fig("data_plot")
+    save_fig("DATA_PLOT")
     plt.show()
 
     # Extracting Features and target labels
@@ -114,6 +133,12 @@ def main():
     print('\nThe minimum point found: ',result[0])
     print('\nComputed cost at minimum point: %.6f\n' %(result[1]))
 
+    # Plotting decision boundary
+    input("Press <ENTER> to plot decision boundary ...")
+    plot_decision_boundary(Ex1_pos,Ex1_neg,Ex2_pos,Ex2_neg,result[0])
+    #save_fig("DECISION_BOUNDARY")
+    plt.show()
+
     # Testing model with predictions
     input("\nPress <ENTER> key to test the model ...")
     Xtest = [[1, 45, 85]] #TEST EXAMPLE
@@ -122,7 +147,6 @@ def main():
     input('\nPress <ENTER> to terminate program ...')
 
 if __name__ == "__main__":
-    input("\nPress <ENTER> to run program ...")
     main()
 
     
