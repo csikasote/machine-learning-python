@@ -55,8 +55,8 @@ class LogisticRegression(object):
     # Decision function
     def decision_(self,X,theta):
         z = self.net_input(X,theta)
-        return "\nProbability: %2f"%(self.sigmoid(z)[0])\
-               + ' \nPrediciton: ' + str(self.predict(X,theta)[0]) \
+        return "Probability: %2f"%(self.sigmoid(z)[0])\
+               + ' \nPrediction: ' + str(self.predict(X,theta)[0]) \
                + ' \nModel Decision: ' + str(self.classify(X,theta)[0]) \
 
 # Function to plot the data distribution
@@ -71,13 +71,13 @@ def plot_data(x1,x2,y1,y2):
     plt.legend()
 
 # Plot decision boundary function
-def plot_decision_boundary(x1,x2,y1,y2,theta):
+def plot_decision_boundary(datapoints,theta):
     theta0 = theta[0]; 
     theta1 = theta[1]; 
     theta2 = theta[2];
     fig, ax = plt.subplots()
-    plt.scatter(x1,y1, s=50, c='b', marker='o', label='Admitted')  
-    plt.scatter(x2,y2, s=50, c='r', marker='x', label='Not Admitted')
+    plt.scatter(datapoints['Ex1_pos'],datapoints['Ex2_pos'], s=50, c='b', marker='o', label='Admitted')  
+    plt.scatter(datapoints['Ex1_neg'],datapoints['Ex2_neg'], s=50, c='r', marker='x', label='Not Admitted')
     x_vals = np.array(ax.get_xlim())
     y_vals = -1 * np.divide(((np.multiply(theta1,x_vals)) + theta0),theta2)
     plt.plot(x_vals, y_vals, '--', c="red", label='Decision Boundary')
@@ -103,15 +103,20 @@ def main():
     df = pd.read_csv(path, header=None, names=['Exam 1', 'Exam 2', 'Admitted'])
     pos_df = df[df['Admitted'].isin([1])]
     neg_df = df[df['Admitted'].isin([0])]
-    Ex1_pos = pos_df['Exam 1'] 
-    Ex2_pos = pos_df['Exam 2']
-    Ex1_neg = neg_df['Exam 1']
-    Ex2_neg = neg_df['Exam 2']
+
+    # Dictionary of data points
+    datapoints = {'Ex1_pos':pos_df['Exam 1'],
+                  'Ex2_pos':pos_df['Exam 2'],
+                  'Ex1_neg':neg_df['Exam 1'],
+                  'Ex2_neg':neg_df['Exam 2']}
 
     # Visualize the data distribution
-    input("Press <ENTER> to visualize data ...")
-    plot_data(Ex1_pos,Ex1_neg,Ex2_pos,Ex2_neg)
-    save_fig("DATA_PLOT")
+    input("\nPress <ENTER> to visualize data ...")
+    plot_data(datapoints['Ex1_pos'],
+              datapoints['Ex1_neg'],
+              datapoints['Ex2_pos'],
+              datapoints['Ex2_neg'])
+    #save_fig("DATA_PLOT")
     plt.show()
 
     # Extracting Features and target labels
@@ -126,23 +131,27 @@ def main():
     lr = LogisticRegression()
     
     # Print the initial cost
+    input("\nPress <ENTER> to compute initial cost ...")
     print('\nInitial Cost: %f\n' % (lr.cost_function(init_theta,X,y)))
 
     # Optimizing the cost function
+    input("Press <ENTER> to fit the model ...\n")
     result = lr.fit(X,y,init_theta)
     print('\nThe minimum point found: ',result[0])
     print('\nComputed cost at minimum point: %.6f\n' %(result[1]))
 
     # Plotting decision boundary
     input("Press <ENTER> to plot decision boundary ...")
-    plot_decision_boundary(Ex1_pos,Ex1_neg,Ex2_pos,Ex2_neg,result[0])
+    plot_decision_boundary(datapoints,result[0])
     #save_fig("DECISION_BOUNDARY")
     plt.show()
 
     # Testing model with predictions
     input("\nPress <ENTER> key to test the model ...")
+    print("\nSTUDENT RESULTS: \n\tEXAM 1: {} \n\tEXAM 2: {}".format(45,85))
     Xtest = [[1, 45, 85]] #TEST EXAMPLE
     decision = lr.decision_(Xtest,result[0])
+    print("\nMODEL EVALUATION:")
     print(decision)
     input('\nPress <ENTER> to terminate program ...')
 
