@@ -117,7 +117,7 @@ def main():
               datapoints['Ex2_pos'],
               datapoints['Ex2_neg'])
     #save_fig("DATA_PLOT")
-    plt.show()
+    plt.show(block=False)
 
     # Extracting Features and target labels
     X = df.values[:,[0,1]] 
@@ -144,7 +144,7 @@ def main():
     input("Press <ENTER> to plot decision boundary ...")
     plot_decision_boundary(datapoints,result[0])
     #save_fig("DECISION_BOUNDARY")
-    plt.show()
+    plt.show(block=False)
 
     # Testing model with predictions
     input("\nPress <ENTER> key to test the model ...")

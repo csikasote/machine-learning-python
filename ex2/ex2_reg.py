@@ -122,7 +122,7 @@ def main():
               datapoints['Ex2_pos'],
               datapoints['Ex2_neg'])
     #save_fig("DATA_PLOT_2")
-    plt.show()
+    plt.show(block=False)
 
     # Features and target labels
     Xtrain = df.values[:,[0,1]]
@@ -156,7 +156,7 @@ def main():
     input("\nPress <ENTER> to plot the decision boundary ...")
     plot_decision_boundary(result.x,1,datapoints)
     #save_fig("DECISION_BOUNDARY_2")
-    plt.show()
+    plt.show(block=False)
 
     # Terminating program
     input("Press <ENTER> to terminate program ...")
