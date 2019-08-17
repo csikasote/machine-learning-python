@@ -168,10 +168,7 @@ class NeuralNetwork(object):
                                            input_layer_size,
                                            hidden_layer_size,
                                            num_labels)
-            
-        # -------------------------------------------------------------
-        # Retrieving parameters
-        # -------------------------------------------------------------
+        
         W1 = parameters["W1"]
         W2 = parameters["W2"]
   
@@ -194,6 +191,7 @@ class NeuralNetwork(object):
 # Visualize sample digits
 def visualize_data(x):
     fig, ax = plt.subplots(nrows =5, ncols=5,sharex=True, sharey=True)
+    h = plt.figure(1)
     ax = ax.flatten()
     m = x.shape[0]
     for i in range(25):
@@ -206,7 +204,7 @@ def visualize_data(x):
     plt.show(block=False)
 
 def nnLearningCurve(cost_vec):
-    #plt.figure(figsize=(10,8)) #IF YOU WANT TO RESIZE THE FIGURE SIZE REMOVE THE HASHTAG CHARACTER
+    g = plt.figure(2)
     plt.plot(range(len(cost_vec)),cost_vec,'b-o', label= r'${J{(\theta)}}$')
     plt.grid(True)
     plt.title("Neural Network cost convergence graph")
