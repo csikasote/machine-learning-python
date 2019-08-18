@@ -24,6 +24,11 @@ def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
     plt.savefig(path, format=fig_extension, dpi=resolution)
 
 class NeuralNetwork(object):
+    
+    def __init__(self, n_classes,learning_rate,Lambda):
+        self.n_classes = n_classes
+        self.learning_rate = learning_rate
+        self.Lambda = Lambda
 
     def sigmoid(self,z):
         return (1/(1+ np.exp(-z)))
@@ -31,8 +36,8 @@ class NeuralNetwork(object):
     def sigmoid_gradient(self,z):
         return np.multiply(self.sigmoid(z),(1 - self.sigmoid(z)))
 
-    def _one_hot(self,y,num_labels):
-        y_matrix = np.zeros((len(y), num_labels))
+    def _one_hot(self,y):
+        y_matrix = np.zeros((len(y), self.n_classes))
         for i in range(len(y)):
             y_matrix[i, y[i] - 1] = 1
         return y_matrix
@@ -41,17 +46,17 @@ class NeuralNetwork(object):
         epsilon_init = np.sqrt(6)/np.sqrt(L_in + L_out);
         return np.random.randn(L_out, 1 + L_in) * 2 * epsilon_init - epsilon_init;
 
-    def initialize_parameters(self, nn_weights, input_layer_size, hidden_layer_size, num_labels):
+    def initialize_parameters(self, nn_weights, input_layer_size, hidden_layer_size):
         # -------------------------------------------------------------
         # Reshaping W1 and W2
         # -------------------------------------------------------------
         W1 = np.reshape(nn_weights[0:hidden_layer_size * (input_layer_size + 1)],\
                         (hidden_layer_size, (input_layer_size + 1)));
         W2 = np.reshape(nn_weights[(hidden_layer_size * (input_layer_size + 1)):,],\
-                        (num_labels, (hidden_layer_size + 1)));
+                        (self.n_classes, (hidden_layer_size + 1)));
         
         assert (W1.shape == (hidden_layer_size, input_layer_size + 1))
-        assert (W2.shape == (num_labels, hidden_layer_size + 1))
+        assert (W2.shape == (self.n_classes, hidden_layer_size + 1))
 
         parameters = {"W1":W1,
                       "W2":W2}
@@ -86,7 +91,7 @@ class NeuralNetwork(object):
 
         return A3, cache
                 
-    def nnCostFunction(self,A3, y, parameters,Lambda):
+    def nnCostFunction(self,A3, y, parameters):
         
         # -------------------------------------------------------------
         # Retrieving parameters
@@ -96,14 +101,11 @@ class NeuralNetwork(object):
         # -------------------------------------------------------------
         # Mapping vector y into a binary vector of 1's and 0's 
         # -------------------------------------------------------------
-        y_matrix = np.zeros((len(y), 10))
-        for i in range(len(y)):
-            y_matrix[i, y[i] - 1] = 1
-        
+        y_matrix = self._one_hot(y)
         # -------------------------------------------------------------
         # The Cost Implementation
         # -------------------------------------------------------------
-        reg_term = (Lambda/(2*len(y))) * (np.sum(np.sum(np.square(W1[:,1:])))\
+        reg_term = (self.Lambda/(2*len(y))) * (np.sum(np.sum(np.square(W1[:,1:])))\
                                      + np.sum(np.sum(np.square(W2[:,1:])))); 
         cost = ((1/len(y) * np.sum(np.sum((np.multiply(-y_matrix,np.log(A3))\
                                       - np.multiply((1-y_matrix),np.log(1-A3))))))\
@@ -111,7 +113,7 @@ class NeuralNetwork(object):
         
         return cost
 
-    def backward_propagation(self,parameters, cache, X, y, Lambda, learning_rate):
+    def backward_propagation(self,parameters, cache, X, y):
         # -------------------------------------------------------------
         # Retrieving parameters
         # -------------------------------------------------------------
@@ -130,9 +132,7 @@ class NeuralNetwork(object):
         # -------------------------------------------------------------
         # Mapping vector y into a binary vector of 1's and 0's 
         # -------------------------------------------------------------
-        y_matrix = np.zeros((len(y), 10))
-        for i in range(len(y)):
-            y_matrix[i, y[i] - 1] = 1
+        y_matrix = self._one_hot(y)
 
         # -------------------------------------------------------------
         # Backpropagation algorithm
@@ -147,14 +147,14 @@ class NeuralNetwork(object):
         temp2=W2;
         temp1[:,0]=0;
         temp2[:,0]=0;
-        dW1 = (1/len(y) * delta1) + ((Lambda/len(y)) * temp1)
-        dW2 = (1/len(y) * delta2) + ((Lambda/len(y)) * temp2)
+        dW1 = (1/len(y) * delta1) + ((self.Lambda/len(y)) * temp1)
+        dW2 = (1/len(y) * delta2) + ((self.Lambda/len(y)) * temp2)
         
         # -------------------------------------------------------------
         # Update parameters
         # -------------------------------------------------------------
-        W1 = W1 - learning_rate * dW1
-        W2 = W2 - learning_rate * dW2
+        W1 = W1 - self.learning_rate * dW1
+        W2 = W2 - self.learning_rate * dW2
         
         
         parameters = {"W1":W1,
@@ -162,12 +162,11 @@ class NeuralNetwork(object):
         
         return parameters
     
-    def model(self, X,y,initial_nn_params, input_layer_size, hidden_layer_size, num_labels, Lambda, learning_rate, print_cost=False):
+    def model(self, X,y,initial_nn_params,input_layer_size,hidden_layer_size,print_cost=False):
 
         parameters = self.initialize_parameters(initial_nn_params,
                                            input_layer_size,
-                                           hidden_layer_size,
-                                           num_labels)
+                                           hidden_layer_size)
         
         W1 = parameters["W1"]
         W2 = parameters["W2"]
@@ -177,9 +176,9 @@ class NeuralNetwork(object):
         print('Iteration\t\tCost\n==========\t\t====')
         for i in range((len(y))):
             A3, cache = self.feedForward(X,parameters)
-            cost = self.nnCostFunction(A3, y, parameters, Lambda)
+            cost = self.nnCostFunction(A3, y, parameters)
             cost_vec.append(cost)
-            parameters = self.backward_propagation(parameters,cache, X, y, Lambda, learning_rate)
+            parameters = self.backward_propagation(parameters,cache, X, y)
             if print_cost and i % 1000 ==0:
                 print("%i\t\t\t%f"%(i,cost))      
         return parameters, np.array(cost_vec)
@@ -217,7 +216,7 @@ def nnLearningCurve(cost_vec):
 def main():
 
     # Instantiating object of the Neural Network class
-    nn = NeuralNetwork()
+    nn = NeuralNetwork(n_classes=10,learning_rate=1, Lambda=0)
 
     # Testing sigmoid gradient
     input('Press <ENTER> to evaluate sigmoid gradient function ...')
@@ -260,10 +259,7 @@ def main():
     num_labels = 10
 
     # Retrieve network parameters 
-    parameters = nn.initialize_parameters(nn_weights,
-                                       input_layer_size,
-                                       hidden_layer_size,
-                                       num_labels);
+    parameters = nn.initialize_parameters(nn_weights,input_layer_size,hidden_layer_size);
 
     W1 = parameters["W1"]
     W2 = parameters["W2"]
@@ -272,16 +268,16 @@ def main():
 
     # Unregulerised cost
     input("\nPress <ENTER> to compute unregularised cost [Lambda=0] ...")
-    Lambda = 0 #No regularisation
+    nn = NeuralNetwork(n_classes=10,learning_rate=1, Lambda=0)
     A3, cache = nn.feedForward(X,parameters)
-    cost = nn.nnCostFunction(A3, y, parameters, Lambda)
+    cost = nn.nnCostFunction(A3, y, parameters)
     print('\nCost(with loaded parameters from ex4weights): %.6f' % (cost))
 
     # Regularised cost
     input("\nPress <ENTER> to compute regularised cost [Lambda=1] ...")
-    Lambda = 1 #With regularisation
+    nn = NeuralNetwork(n_classes=10,learning_rate=1, Lambda=1)
     A3, cache = nn.feedForward(X,parameters)
-    cost = nn.nnCostFunction(A3, y, parameters, Lambda)
+    cost = nn.nnCostFunction(A3, y, parameters)
     print('\nRegularised cost(with loaded parameters from ex4weights): %.6f' % (cost))
 
 
@@ -301,9 +297,6 @@ def main():
                                     nn_params,
                                     input_layer_size,
                                     hidden_layer_size,
-                                    num_labels,
-                                    Lambda=1,
-                                    learning_rate=1,
                                     print_cost=True)
     # Plot learning curve
     input("\nPress <ENTER> to plot learning curve ...")
