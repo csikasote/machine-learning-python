@@ -36,10 +36,8 @@ class LinearRegression(object):
     def linearRegCostFunction(self,X, y, theta):
         y_hat = self.hypothesis(X,theta)
         cost =(1/(2*len(y))) * np.sum(np.square(y_hat-y));
-        temp = np.ones((theta.shape[0],1))
-        temp[0,0] = 0
-        reg_term = (self.Lambda/(2*len(y)))\
-                   * np.sum(np.square(np.multiply(temp, theta)))
+        reg_term = (self.Lambda/(2*len(y))) *\
+                   np.sum(np.dot(theta[1:].T,theta[1:]))
         return cost + reg_term
     
     def linearRegGradientFunction(self,X, y,theta):
@@ -56,22 +54,21 @@ class LinearRegression(object):
         initial_theta = np.zeros((X.shape[1], 1))
         cost = lambda t: self.linearRegCostFunction(X, y, t.reshape(-1,1))
         grad = lambda t: self.linearRegGradientFunction(X, y, t.reshape(-1,1)).flatten()
-        theta = opt.fmin_cg(cost, initial_theta.T, fprime=grad, maxiter=200, disp=False)
+        theta = opt.fmin_cg(cost, initial_theta.T, fprime=grad, maxiter=150, disp=False)
         return theta.reshape(-1,1)
     
     def learningCurve(self,X, y, Xval, yval,theta):
         error_train = np.zeros((len(y), 1))
         error_val   = np.zeros((len(y), 1))
         for i, j in enumerate(range(1,len(y)+1)):
-            theta = self.trainLinearReg(X[:j,:], y[:j,:]);
+            theta = self.trainLinearReg(X[0:j,:], y[:j,:]);
             error_train[i] = self.linearRegCostFunction(X[:j,:], y[:j,:], theta);
             error_val[i] = self.linearRegCostFunction(Xval, yval, theta);
-        print('\n# Training Examples\tTrain Error\tCross Validation Error\n');
+        print('\n# Training Examples\tTrain Error\tCV Error\n');
         for i in range(0, len(y)):
             print('  \t%d\t\t%f\t%f\n' % (i+1, error_train[i], error_val[i]));
         return error_train, error_val
     
-
 
 # To plot the training data
 def plot_data(X,y):
@@ -109,6 +106,61 @@ def plotLearningCurve(error_train,error_val):
     plt.grid(True)
     plt.legend()
     plt.show(block=False)
+
+# Map X features to Polynomial features
+def polyFeatures(X, p):
+    Xpoly = np.zeros((X.shape[0], p))
+    Xpoly[:,0] = X[:,0]
+    for i in range(1,p):
+        Xpoly[:,i] = np.power(X[:,0],i+1); 
+    return Xpoly
+
+# Feature normalization
+def featureNormalize(X):
+    mu = np.mean(X, axis=0, keepdims=True);
+    sigma = np.std(X,ddof=1, axis = 0, keepdims=True);
+    Xnorm = (X - mu)/sigma
+    return Xnorm, mu, sigma
+
+# Plot polynomial line
+def plotPolynomialGraph(min_x, max_x, mu, sigma, theta, p):
+    x = np.arange(min_x-15, max_x+25, 0.05)
+    x = np.reshape(x, (len(x), 1))
+
+    x_poly_train = polyFeatures(x, p);
+    x_poly_train = (x_poly_train - mu)/sigma;
+    x_poly_train = np.insert(x_poly_train,0,1,axis=1)
+    h = np.dot(x_poly_train, theta)
+    plt.plot(x, h, 'b--')
+
+# Fits the polynomial line on the training examples
+def plotPolynomialFit(X,y, mu,sigma,theta,p,fig_num):
+    i = plt.figure(fig_num)
+    plt.plot(X,y,'rx',markersize=10, label='Training Example')
+    plotPolynomialGraph(X.min(), X.max(), mu, sigma, theta,p)
+    plt.xlabel('Change in water level (x)');
+    plt.ylabel('Water flowing out of the dam (y)');
+    titlestr = 'Polynomial Regression Fit (%s = %d)' % (r'$\lambda$',0)
+    plt.title(titlestr)
+    plt.grid(True)
+    plt.axis([-100,100,-100,100])
+    plt.legend()
+    plt.show(block=False)
+
+# Plot polynomial learning curves
+def plotPolyLearningCurves(error_train, error_val,fig_num):
+    j = plt.figure(fig_num)
+    plt.plot(range(1, len(error_train) + 1), error_train, 'b-o', label='Train')
+    plt.plot(range(1, len(error_train) + 1), error_val,'r-o', label='Cross Validation')
+    plt.xlabel('# of training examples')
+    plt.ylabel('Error')
+    plt.title('Polynomial Regression Learning Curve (%s = %d)' %\
+              (r'$\lambda$',0));
+    plt.grid(True)
+    plt.legend()
+    plt.axis([0,14,-20,100])
+    plt.show(block=False)
+
 
 def main():
     # Load dataset
@@ -162,10 +214,46 @@ def main():
     plotLearningCurve(error_train,error_val)
     #save_fig("LEARNING_CURVE_LR")
 
+    # Mapping X, Xval, Xtest onto Polynomial features
+    X = data['X']
+    poly_degree = 8
+
+    # Map X onto polynomial features
+    input("\nPress <ENTER> to map X, Xval, Xtest to polynomial features ...")
+    X_poly_train = polyFeatures(X, poly_degree)
+    X_poly_train, mu, sigma = featureNormalize(X_poly_train)
+    X_poly_train = np.insert(X_poly_train,0,1,axis=1) #Add one the X_poly_train
+    
+    # Map Xval onto polynomial features
+    Xval = data['Xval']
+    X_poly_val = polyFeatures(Xval, poly_degree);
+    X_poly_val = (X_poly_val - mu)/sigma
+    X_poly_val = np.insert(X_poly_val,0,1,axis=1) #Add one the X_poly_val
+    
+    # Map Xtest onto polynomial features
+    X_poly_test = polyFeatures(Xtest, poly_degree);
+    X_poly_test = (X_poly_test - mu)/sigma
+    X_poly_test = np.insert(X_poly_test,0,1,axis=1) #Add one the X_poly_test
+
+
+    # Fit linear regression on polynomial features
+    input("\nPress <ENTER> to fit linear regression on polynomial features ...")
+    theta = lr.trainLinearReg(X_poly_train, y);
+    error_train, error_val = lr.learningCurve(X_poly_train, y, X_poly_val, yval,theta);
+
+    # Plot linear regression with polynomial features
+    input("\nPress <ENTER> to plot polynomial fit line ...")
+    plotPolynomialFit(X,y, mu,sigma,theta,poly_degree,4)
+    #save_fig("POLYNOMIAL_FIT")
+
+    # Plot the polynomial learning curves
+    input("\nPress <ENTER> to plot polynomial learning curves ...")
+    plotPolyLearningCurves(error_train, error_val,5)
+    #save_fig("POLYNOMIAL_LEARNING_CURVE")   
+
     #Terminate program
     input("\nPress <ENTER> to terminate program ...")
 
-    
 
 if __name__ == "__main__":
     main()
