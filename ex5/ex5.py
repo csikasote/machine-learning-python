@@ -152,7 +152,7 @@ def plotPolyLearningCurves(error_train, error_val,fig_num):
     j = plt.figure(fig_num)
     plt.plot(range(1, len(error_train) + 1), error_train, 'b-o', label='Train')
     plt.plot(range(1, len(error_train) + 1), error_val,'r-o', label='Cross Validation')
-    plt.xlabel('# of training examples')
+    plt.xlabel('Number of training examples')
     plt.ylabel('Error')
     plt.title('Polynomial Regression Learning Curve (%s = %d)' %\
               (r'$\lambda$',0));
@@ -235,7 +235,6 @@ def main():
     X_poly_test = (X_poly_test - mu)/sigma
     X_poly_test = np.insert(X_poly_test,0,1,axis=1) #Add one the X_poly_test
 
-
     # Fit linear regression on polynomial features
     input("\nPress <ENTER> to fit linear regression on polynomial features ...")
     theta = lr.trainLinearReg(X_poly_train, y);
@@ -251,7 +250,7 @@ def main():
     plotPolyLearningCurves(error_train, error_val,5)
     #save_fig("POLYNOMIAL_LEARNING_CURVE")   
 
-    #Terminate program
+    # Terminate program
     input("\nPress <ENTER> to terminate program ...")
 
 
