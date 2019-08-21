@@ -163,7 +163,8 @@ def plotPolyLearningCurves(error_train, error_val,fig_num):
 
 
 def main():
-    # Load dataset
+    print("\nProgramming Exercise 5: Regularized Linear Regression and Bias vs.Variance\n")
+    # Load training dataset for this exercise
     input("\nPress <ENTER> to load dataset ...")
     data = sio.loadmat('data/ex5data1.mat')
     X,y = data['X'],data['y'] # Loading training data
