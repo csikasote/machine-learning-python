@@ -226,7 +226,7 @@ def main():
     save_fig("SVM_RESULT_TD3")
 
     # Terminate program
-    input("\nPress <ENTER> to terminate process ...")
+    input("\nPress <ENTER> key to terminate process ...")
 
 
 if __name__ == "__main__":
