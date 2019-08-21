@@ -5,10 +5,23 @@ assert sys.version_info >= (3, 5)
 # Common imports
 import scipy.io as sio
 import numpy as np
+import os
 
 # To plot pretty figures
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+
+# Where to save the figures
+EXERCISE_ROOT_DIR = "."
+IMAGES_PATH = os.path.join(EXERCISE_ROOT_DIR, "images")
+
+# The function allows images to be saved
+def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
+    path = os.path.join(IMAGES_PATH, fig_id + "." + fig_extension)
+    print("Saving figure", fig_id)
+    if tight_layout:
+        plt.tight_layout()
+    plt.savefig(path, format=fig_extension, dpi=resolution)
 
 
 def plot_data_points(X, y=None,ax = None):
@@ -111,6 +124,7 @@ def main():
     plot_data_points(X)
     plt.title("Dataset points")
     plt.show(block=False)
+    #save_fig("PLOT_DATA")
 
 
     # PCA with SVD
@@ -122,8 +136,6 @@ def main():
                            
     X_proj1 = X_norm.dot(U[:,0].reshape(-1,1)) 
     X_proj2 = X_norm.dot(U[:,1].reshape(-1,1)) 
-    #u1 = U[:,0].reshape(-1,1)
-    #u2 = U[:,1].reshape(-1,1)
     print('\nProjection of the first example is %0.3f.\n'%float(Z[0])) #Expected value of about 1.481
     print('Computed eigenvectors are:\n\n',U)
     print('\nTop principal component is',U[:,0])
@@ -134,6 +146,7 @@ def main():
     plot_eigen_vectors(X_norm,U)
     plt.title('Principal components axes')
     plt.show(block=False)
+    #save_fig("PC_AXES")
 
 
     # Part 2: Reconstructing an approximation of the data
@@ -147,6 +160,7 @@ def main():
     visualize_projections(X_norm, Xres,U)
     plt.title('The normalized and projected data after PCA.')
     plt.show(block=False)
+    #save_fig("PROJECTIONS")
 
     # Terminate program
     input("\nPress <ENTER> key to terminate program ...")
