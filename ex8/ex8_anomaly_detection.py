@@ -43,7 +43,6 @@ def multivariateGaussian(X, mu, sigma_sqrd):
     return eqn_part1 * eqn_part2
 
 def visualizeFit(X,mu, sigma_sqrd):
-    plot_data_points(X)
     linespace = np.arange(0, 35.5, 0.5)
     xx, yy = np.meshgrid(linespace, linespace)
     Z = multivariateGaussian(np.c_[xx.ravel(), yy.ravel()],mu,sigma_sqrd);
@@ -55,6 +54,7 @@ def visualizeFit(X,mu, sigma_sqrd):
         plt.contour(xx, yy, Z,  norm=LogNorm(vmin=Z.min(), 
                                              vmax=Z.max()),
                     levels=10.0 ** np.arange(-20, 0, 3),linewidths=1, colors='k')
+    plot_data_points(X)
 
 def selectThreshold(yval, pval):
     bestEpsilon = 0.0;
