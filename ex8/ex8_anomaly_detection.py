@@ -3,8 +3,9 @@ import sys
 assert sys.version_info >= (3, 5)
 
 # Common imports
-import numpy as np
 import scipy.io as sio
+import numpy as np
+import os
 
 # To plot pretty figures
 import matplotlib as mpl
@@ -14,6 +15,18 @@ from matplotlib.colors import LogNorm
 # To suppress warnings
 import warnings
 warnings.filterwarnings('ignore')
+
+# Where to save the figures
+EXERCISE_ROOT_DIR = "."
+IMAGES_PATH = os.path.join(EXERCISE_ROOT_DIR, "images")
+
+# The function allows images to be saved
+def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
+    path = os.path.join(IMAGES_PATH, fig_id + "." + fig_extension)
+    print("Saving figure", fig_id)
+    if tight_layout:
+        plt.tight_layout()
+    plt.savefig(path, format=fig_extension, dpi=resolution)
 
 def plot_data_points(X, y=None):
     plt.scatter(X[:, 0], X[:, 1], alpha=0.6, label='Dataset points')
@@ -99,6 +112,7 @@ def main():
     plt.figure(1)
     plot_data_points(X, y=None)
     plt.show(block=False)
+    save_fig("AD_POINTS")
 
     # Estimate mu and sigma
     mu, sigma_sqrd = estimateGaussian(X);
@@ -109,6 +123,7 @@ def main():
     visualizeFit(X,mu,sigma_sqrd)
     plt.title("The Gaussian distribution contours")
     plt.show(block=False)
+    save_fig("GAUSSIAN_CONTOUR_FIT")
 
     # Cross Validation
     pval = multivariateGaussian(Xval, mu, sigma_sqrd);
@@ -122,8 +137,9 @@ def main():
 
     plt.figure(3)
     plotOutliers(X,outliers,mu,sigma_sqrd)
-    plt.title('Plot computed outlier points')
+    plt.title('Outlier points')
     plt.show(block=False)
+    save_fig("OUTLIERS")
 
     # PART 2: High dimensional dataset
     data    = sio.loadmat('data/ex8data2.mat')
