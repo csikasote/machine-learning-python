@@ -121,9 +121,8 @@ class NNPredict(object):
 
 
 def main():
-
     # PART 1: Multiclass classification
-    print("PART 1: Multiclass Classification (using Logistic Regression)")
+    print("\nProgramming Exercise 3 (Part 1): Multiclass Classification")
     # Load dataset
     data = sio.loadmat('data/ex3data1.mat')
     X = data['X']
@@ -178,7 +177,7 @@ def main():
     input("\nPress <ENTER> to continue ...\n")
     
     # PART 2: NEURAL NETWORK
-    print("\nPART 2: Multiclass Classification (using ANN)")
+    print("\nProgramming Exercise 3 (Part 2): Neural Networks")
     # Load weights for the neural network
     input("\nPress <ENTER> to load weights ...")
     param = sio.loadmat('data/ex3weights.mat')

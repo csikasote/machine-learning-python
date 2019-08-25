@@ -98,7 +98,8 @@ def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
     plt.savefig(path, format=fig_extension, dpi=resolution)
 
 def main():
-    # Load dataset
+    print("\nProgramming Exercise 2: Logistic Regression w/o Regularization")
+    # Load dataset for computations
     path = os.getcwd() + '\data\ex2data1.txt'
     df = pd.read_csv(path, header=None, names=['Exam 1', 'Exam 2', 'Admitted'])
     pos_df = df[df['Admitted'].isin([1])]

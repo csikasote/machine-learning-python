@@ -104,8 +104,10 @@ def plot_decision_boundary(theta,Lambda,datapoints):
 
 
 def main():
-    path = os.getcwd() + '\data\ex2data2.txt'
-    df = pd.read_csv(path, header=None, names=['Test_1', 'Test_2', 'Accepted'])
+    print("\nProgramming Exercise 2: Logistic Regression with Regularization")
+
+    # Load dataset for computation
+    df = pd.read_csv(os.getcwd() + '\data\ex2data2.txt', names=['Test_1', 'Test_2', 'Accepted'])
     pos_df = df[df['Accepted'].isin([1])]
     neg_df = df[df['Accepted'].isin([0])]
 
