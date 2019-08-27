@@ -21,4 +21,4 @@ This is my Python re-implementation of the programming exercises in the classic 
 - Raschka, S. & Mirjalili, V., 2017. Python Machine Learning. Birmingham: Packt.
 
 ## Contact ##
-If you have any comment concerning these implementations, I would like to here them. Feel free to [email](mailto:claytone.sikasote@outlook.com) me or connect with me on [twitter](https://twitter.com/iamsikasote)
+If you have any comment concerning these implementations, I would like to here them. Feel free to [email](mailto:claytone.sikasote@outlook.com) me or connect with me on [twitter](https://twitter.com/iamsikasote).
