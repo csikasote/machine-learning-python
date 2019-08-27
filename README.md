@@ -14,11 +14,11 @@ This is my Python re-implementation of the programming exercises in the classic 
 - [Programming Exercise 8: Anomaly Detection & Recommender Systems](ex8)
 
 ## Useful resources and references
-- CS229, Machine Learning. http://cs229.stanford.edu/
+- CS229 - [Machine Learning](http://cs229.stanford.edu/) course, Stanford University
 - Geron, A., 2017. Hands-On Machine Learning with Scikit-learn & Tensorflow. Sepastopol: O`reilly.
 - James, G., Witten, D., Hastie, T. & Tibshirani, R., 2017. [An Introduction to Statistical Learning](http://faculty.marshall.usc.edu/gareth-james/ISL/). New York: Springer.
 - Marsland, S., 2015. Machine Learning: An Algorithmic Perspective. s.l.:CRC press.
 - Raschka, S. & Mirjalili, V., 2017. Python Machine Learning. Birmingham: Packt.
 
 ## Contact ##
-If you have any comment concerning these implementations, I would like to here them. Feel free to [email](claytone.sikasote@outlook.com) me or connect with me on [twitter](https://twitter.com/iamsikasote)
+If you have any comment concerning these implementations, I would like to here them. Feel free to [email](mailto:claytone.sikasote@outlook.com) me or connect with me on [twitter](https://twitter.com/iamsikasote)
