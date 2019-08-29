@@ -72,7 +72,7 @@ def plot_cost(model):
     plt.title('Batch Gradient Descent (BGD)')
     plt.legend()
 
-# Fit SLR
+# Fit linear regression line
 def plot_fit(Xtrain,X,y,model):
     plt.plot(X,y,'rx',markersize=10, label='Training Example')
     plt.plot(Xtrain, model.predict(Xtrain),'--', color='blue', lw=2)
