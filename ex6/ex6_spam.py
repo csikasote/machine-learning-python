@@ -70,8 +70,7 @@ def preprocessing_model(email,df_path_vocab):
     vocab_dict = getVocabList(df_path_vocab,reverse=False)
     indexList = wordToIndices(tokenList, vocab_dict)
     x = emailFeatures(indexList,vocab_dict)
-    
-    print("Length of feature vector is %d" % len(x))
+    print("\nLength of feature vector is %d" % len(x))
     print("Number of non-zero entries is: %d" % sum(x==1))
     return x
 
@@ -156,7 +155,7 @@ def main():
     # Classifying the emails
     input("\nPress <ENTER> key to classify 'emailSample1.txt' ...")
     email1 = 'data/emailSample1.txt'
-    processed_email = preprocessing_model(email,'data/vocab.txt')
+    processed_email = preprocessing_model(email1,'data/vocab.txt')
     email_classifier(model,processed_email)
 
     input("\nPress <ENTER> key to classify 'emailSample2.txt' ...")
@@ -164,14 +163,10 @@ def main():
     processed_email = preprocessing_model(email2,'data/vocab.txt')
     email_classifier(model,processed_email)
 
+    input("\nPress <ENTER> key to read in 'spamSample1.txt' ...")
+    print("\n",preprocess(read_email('data/spamSample1.txt')))
+    processed_email = preprocessing_model('data/spamSample1.txt','data/vocab.txt')
     input("\nPress <ENTER> key to classify 'spamSample1.txt' ...")
-    email3 = 'data/spamSample1.txt'
-    processed_email = preprocessing_model(email3,'data/vocab.txt')
-    email_classifier(model,processed_email)
-
-    input("\nPress <ENTER> key to classify 'spamSample2.txt' ...")
-    email4 = 'data/spamSample2.txt'
-    processed_email = preprocessing_model(email4,'data/vocab.txt')
     email_classifier(model,processed_email)
 
     # Terminate program
