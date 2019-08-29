@@ -12,12 +12,12 @@ EXERCISE_ROOT_DIR = "."
 IMAGES_PATH = os.path.join(EXERCISE_ROOT_DIR, "images")
 
 # Simple linear regression class
-class SimpleLinearRegressionGD(object):
+class LinearRegression(object):
     def __init__(self, alpha=0.001, n_iter=20):
         self.alpha    = alpha
         self.n_iter   = n_iter
     
-    def MSE(self, X, y):
+    def cost_function(self, X, y):
         self.w_  = np.zeros(X.shape[1])
         y_hat    = self.hypothesis(X)
         errors   = (y_hat - y)
@@ -67,7 +67,7 @@ def plot_cost(model):
     plt.xlabel('# of Iterations')
     plt.ylabel(r'${J{(\theta)}}$', rotation=1)
     plt.xlim([0,model.n_iter])
-    plt.ylim([4,7])
+    plt.ylim([3.0,7])
     plt.grid(True)
     plt.title('Batch Gradient Descent (BGD)')
     plt.legend()
@@ -87,7 +87,7 @@ def plot_fit(Xtrain,X,y,model):
 def main():
     print("\nProgramming Exercise 1: Linear Regression with Single Variable\n")
     # Load dataset for computation
-    data = pd.read_csv(os.getcwd() + '\data\ex1data1.txt', header=None).values
+    data = pd.read_csv(os.getcwd() + '\data\ex1data1.txt').values
     X = data[:,0].reshape(-1,1)
     y = data[:,1]
 
@@ -102,11 +102,11 @@ def main():
     plt.show(block=False)
 
     # Instantiating an object of linear regression class
-    lr = SimpleLinearRegressionGD(0.01, 1500)
+    lr = LinearRegression(0.01, 1500)
 
     # Computing initial cost
     input("\nPress <ENTER> to compute initial cost ...")
-    print('\nInitial cost computes is %.2f.'%(lr.MSE(Xtrain,ytrain)))
+    print('\nInitial cost computes is %.2f.'%(lr.cost_function(Xtrain,ytrain)))
 
     # Fit the SLR
     input("\nPress <ENTER> key to run SLR with BGD ...")
