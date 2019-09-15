@@ -74,9 +74,6 @@ class LogisticRegression(object):
 
     # Prediction function
     def predict(self,all_theta, X):
-        m = X.shape[0];
-        num_labels = all_theta.shape[0];
-        prediction = np.zeros((m, 1));
         h = self.sigmoid(self.net_input(X, all_theta.T));
         prediction = np.argmax(h, axis=1)
         prediction[prediction == 0] = 10
